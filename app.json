@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "waste_watchers",
+    "slug": "waste_watchers",
+    "version": "1.0.0",
+    "plugins": [
+      "expo-secure-store"
+    ]
+  },
+  "name": "waste_watchers"
+}
