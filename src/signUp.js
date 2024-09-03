@@ -17,20 +17,9 @@ const SignUp = ({ onLogin, ...props }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [fruitTree, setFruitTree] = useState('');
-    const [selectedTree, setSelectedTree] = useState(0);
-
-    const handleTreeSelection = (treeType) => {
-        setFruitTree(treeType);
-        setSelectedTree(treeType);
-    };
-
-    const isTreeSelected = (treeType) => {
-        return selectedTree === treeType;
-    };
 
     const handleSubmit = () => {
-        if (!name || !email || !password || !fruitTree) {
+        if (!name || !email || !password ) {
             setErrorMessage("All fields are required.");
             return;
         }
@@ -48,7 +37,6 @@ const SignUp = ({ onLogin, ...props }) => {
                     console.log("user doesn't exist");
                     // User not found, create a new user
                     axios.post('http://192.168.1.159:8080/users/createUser', {
-                        tree_type: fruitTree,
                         email_address: email,
                         name: name,
                         username: name,
@@ -69,7 +57,6 @@ const SignUp = ({ onLogin, ...props }) => {
                 console.log("user doesn't exist");
                     // User not found, create a new user
                     axios.post('http://192.168.1.159:8080/users/createUser', {
-                        tree_type: fruitTree,
                         email_address: email,
                         name: username,
                         username: username,
@@ -135,43 +122,7 @@ const SignUp = ({ onLogin, ...props }) => {
                         />
                     </View>
                 </View>
-                <View styles = {styles.chooseTreeContainer}>
-                    <FontAwesome style={styles.title}>Choose Tree Type: {fruitTree}</FontAwesome>
-                    <View style={styles.treeButtonsContainer}>
-                        <TouchableOpacity
-                           style={[styles.treeButton, isTreeSelected("Apple") && styles.selectedTreeButton]}
-                            onPress={() => handleTreeSelection("Apple")}
-                        >
-                            <Image source={require('./assets/logos/appleLogo.png')} style={styles.treeImage} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.treeButton, isTreeSelected("Peach") && styles.selectedTreeButton]}
-                            onPress={() => handleTreeSelection("Peach")}
-                        >
-                            <Image source={require('./assets/logos/peachLogo.png')} style={styles.treeImage} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.treeButton, isTreeSelected("Orange") && styles.selectedTreeButton]}
-                            onPress={() => handleTreeSelection("Orange")}
-                        >
-                            <Image source={require('./assets/logos/orangeLogo.png')} style={styles.treeImage} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.treeButton, isTreeSelected("Mango") && styles.selectedTreeButton]}
-                            onPress={() => handleTreeSelection("Mango")}
-                        >
-                            <Image source={require('./assets/logos/mangoLogo.png')} style={styles.treeImage} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.treeButton, isTreeSelected("Banana") && styles.selectedTreeButton]}
-                            onPress={() => handleTreeSelection("Banana")}
-                        >
-                            <Image source={require('./assets/logos/bananaLogo.png')} style={styles.treeImage} />
-                        </TouchableOpacity>
-                       
-                    </View>
-                </View>
-
+            
                 {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
                 <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                         <Text style={styles.buttonText}>Sign Up</Text>
@@ -214,9 +165,6 @@ const styles = StyleSheet.create({
     },
     backButton: {
         marginLeft: 20,
-    },
-    selectedTreeButton: {
-        backgroundColor: '#65c500', // color for selected button
     },
     loginInformation: {
         backgroundColor: 'white',
@@ -315,30 +263,9 @@ const styles = StyleSheet.create({
         fontWeight : "bold",
 
     }, 
-    chooseTreeContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     title: {
         fontSize: 15,
         marginBottom: 10,
-    },
-    treeButtonsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 10,
-    },
-    treeButton: {
-        backgroundColor: '#65c500',
-        borderRadius: 10,
-        padding: 10,
-        marginRight: 10
-    },
-    treeImage: {
-        width: 40,
-        height: 40,
-        resizeMode: 'contain',
     },
     errorText: {
         color: 'red',

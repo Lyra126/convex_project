@@ -1,5 +1,4 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import FindComposter from "./src/FindComposter";
 import CenterHome from "./src/centerHome";
 import RecordWaste from "./src/RecordWaste.js";
 import Map from "./src/Map.js";
@@ -16,7 +15,6 @@ function TabGroup(){
             <Tab.Screen name="Home" component={CenterHome}/>
             <Tab.Screen name="Tree" component={Home}/>
             <Tab.Screen name="Record Waste" component={RecordWaste}/>
-            <Tab.Screen name="Find Composter" component={FindComposter}/>
             <Tab.Screen 
                 name="Map" 
                 component={Map} 

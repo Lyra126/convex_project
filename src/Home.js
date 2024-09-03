@@ -1,247 +1,188 @@
-import React, { useRef, useEffect, useState } from "react";import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
-import { View, Text, InteractiveArea, Dimensions, StyleSheet, TouchableOpacity, Image,ImageBackground, Platform, Keyboard, ActivityIndicator} from "react-native";
-import { GestureHandlerRootView, Gesture, GestureDetector} from "react-native-gesture-handler";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Platform, Image } from "react-native";
 import * as SecureStore from 'expo-secure-store';
 import axios from "axios"; 
-  //apples
-  const apple1 = require('./assets/fruitTrees/apple1.png');
-  const apple2 = require('./assets/fruitTrees/apple2.png');
-  const apple3 = require('./assets/fruitTrees/apple3.png');
-  const apple4 = require('./assets/fruitTrees/apple4.png');
-  const apple5 = require('./assets/fruitTrees/apple5.png');
-  //peaches
-  const peach1 = require('./assets/fruitTrees/peach1.png');
-  const peach2 = require('./assets/fruitTrees/peach2.png');
-  const peach3 = require('./assets/fruitTrees/peach3.png');
-  const peach4 = require('./assets/fruitTrees/peach4.png');
-  const peach5 = require('./assets/fruitTrees/peach5.png');
-  //oranges
-  const orange1 = require('./assets/fruitTrees/orange1.png');
-  const orange2 = require('./assets/fruitTrees/orange2.png');
-  const orange3 = require('./assets/fruitTrees/orange3.png');
-  const orange4 = require('./assets/fruitTrees/orange4.png');
-  const orange5 = require('./assets/fruitTrees/orange5.png');
-  //mangos
-  const mango1 = require('./assets/fruitTrees/mango1.png');
-  const mango2 = require('./assets/fruitTrees/mango2.png');
-  const mango3 = require('./assets/fruitTrees/mango3.png');
-  const mango4 = require('./assets/fruitTrees/mango4.png');
-  const mango5 = require('./assets/fruitTrees/mango5.png');
-  //bananas
-  const banana1 = require('./assets/fruitTrees/banana1.png');
-  const banana2 = require('./assets/fruitTrees/banana2.png');
-  const banana3 = require('./assets/fruitTrees/banana3.png');
-  const banana4 = require('./assets/fruitTrees/banana4.png');
-  const banana5 = require('./assets/fruitTrees/banana5.png');
 
-  const wateringCan = require('./assets/wateringCan.png')
-  const pourWateringCan = require('./assets/pourWateringCan.png')
-  const restWateringCan = require('./assets/restWateringCan.png')
-
-
-const Home = ({ navigation}) => {
+const Home = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [points, setPoints] = useState(0);
-  const [fruitTree, setFruitTree] = useState("white");
-  const [showWateringCan, setShowWateringCan] = useState(false);
-  const [showWateringCanButton, setShowWateringCanButton] = useState(true);
-  const [wateringCanImage, setWateringCanImage] = useState(wateringCan);
-  const wateringCanRef = useRef(null);
-  const wcButton = useRef(null);
-  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState('Rachel P.');
+  const breakfast = [
+    { name: 'Oatmeal', calories: 150, protein: 5, carbs: 27, fats: 3, sugars: 1, image: require('./assets/oatmeal.jpeg') },
+  ];
+
+  const lunch = [
+    { name: 'Chicken Salad', calories: 250, protein: 20, carbs: 10, fats: 15, sugars: 2, image: require('./assets/oatmeal.jpeg') },
+  ];
+
+  const dinner = [
+    { name: 'Grilled Salmon', calories: 350, protein: 30, carbs: 0, fats: 20, sugars: 0, image: require('./assets/oatmeal.jpeg') },
+  ];
+
+  const currentDate = new Date();
 
   const navigateToScreen = (screen) => {
     navigation.navigate(screen);
   };
 
-  const getUserData = async (key) => {
-    const result = await SecureStore.getItemAsync(key);
-    if (result) {
-        setEmail(result);
-        return result;
-    } else {
-        console.log('No value stored under that key.');
-        return null;
-    }
-}
+  const formattedDate = currentDate.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const userEmail = await getUserData("email");
-      if (userEmail) {
-        const response = await axios.get(`http://192.168.1.159:8080/users/getUser?email=${userEmail}`);
-        const userData = response.data;
-        if (userData) {
-          setPoints(userData.current_points);
-          setFruitTree(userData.tree_type);
-        } else {
-          console.error("User not found or incorrect credentials");
-        }
-      }
-    } catch (error) {
-      console.error("Error getting user data:", error);
-    } finally {
-      setLoading(false); // Set loading to false regardless of success or failure
-    }
-  };
-
-  fetchData();
-}, []);
-
-  
-  const showWateringCanAnimation = () =>{
-    setShowWateringCanButton(false);
-    //setShowWateringCan(wateringCan => !wateringCan);
-    if(wateringCan == true){
-      
-      setShowWateringCan(false);
-    }else{
-      setWateringCanImage(wateringCan);
-      setShowWateringCan(true);
-      //rotate it
-      setTimeout(function (){
-        if(wateringCanRef.current){
-          wateringCanRef.current.setNativeProps({ style: { transform: [{ rotate: '-45deg' }] }});
-        }
-      }, 1000);
-      
-      //change image to pouring
-      setTimeout(function (){
-        setWateringCanImage(pourWateringCan);
-      }, 1000);
-      
-      //set it back
-      setTimeout(function (){
-        setWateringCanImage(wateringCan);
-        wateringCanRef.current.setNativeProps({ style: { transform: [{ rotate: '0deg' }] }});
-        setTimeout(() => {
-          setShowWateringCan(false);
-          setShowWateringCanButton(true);
-        }, 500); // Adjust the delay as needed
-      }, 2000);
-    }
-    
-  };
-
-
-  // Update background image based on points
-  const getBackgroundImage = () => {
-    const stage = Math.floor(points / 20) % 5 + 1;
-    let image;
-
-    switch (fruitTree) {
-      
-      case "Apple":
-        switch (stage) {
-          case 1: image = apple1; break;
-          case 2: image = apple2; break;
-          case 3: image = apple3; break;
-          case 4: image = apple4; break;
-          case 5: image = apple5; break;
-          default: image = apple1; break;
-        }
-        break;
-      case "Peach":
-        switch (stage) {
-          case 1: image = peach1; break;
-          case 2: image = peach2; break;
-          case 3: image = peach3; break;
-          case 4: image = peach4; break;
-          case 5: image = peach5; break;
-          default: image = peach1; break;
-        }
-        break;
-      case "Mango":
-        switch (stage) {
-          case 1: image = mango1; break;
-          case 2: image = mango2; break;
-          case 3: image = mango3; break;
-          case 4: image = mango4; break;
-          case 5: image = mango5; break;
-          default: image = mango1; break;
-        }
-        break;
-      case "Banana":
-        switch (stage) {
-          case 1: image = banana1; break;
-          case 2: image = banana2; break;
-          case 3: image = banana3; break;
-          case 4: image = banana4; break;
-          case 5: image = banana5; break;
-          default: image = banana1; break;
-        }
-        break;
-      case "Orange":
-        switch (stage) {
-          case 1: image = orange1; break;
-          case 2: image = orange2; break;
-          case 3: image = orange3; break;
-          case 4: image = orange4; break;
-          case 5: image = orange5; break;
-          default: image = orange1; break;
-        }
-        break;
-      default:
-        image = apple1; // Default to apple
-    }
-
-    return image;
-  };    
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
-    return (
-      <>
-      {points !== 0 && fruitTree !== "white" && (
-        <ImageBackground source={getBackgroundImage()} style={styles.container}>
-          <View style={styles.wateringCanContainer}>
-            {showWateringCan && <Image source={wateringCanImage} ref={wateringCanRef} style={styles.wateringCan} />}
-          </View>
-          <TouchableOpacity style={styles.touchWC} onPress={() => showWateringCanAnimation()}>
-            {showWateringCanButton && <Image source={restWateringCan} ref={wcButton} style={styles.restWC} />}
+  return (
+    <>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Good morning, {username}</Text>
+        <View style={styles.row}>
+          <Text style={styles.date}>{formattedDate}</Text>
+          <TouchableOpacity style={styles.button} onPress={() => navigateToScreen('SomeScreen')}>
+            <Text style={styles.buttonText}>Refresh Meals </Text>
           </TouchableOpacity>
-        </ImageBackground>
-      )}
+        </View>
+      </View>
+
+      <View style={styles.container}>
+       <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Breakfast</Text>
+          {breakfast.map((item, index) => (
+            <View key={index} style={styles.mealInfo}>
+              <View style={styles.mealDetails}>
+                <Text style={styles.mealText}>{item.name}</Text>
+                <Text style={styles.nutritionText}>Calories: {item.calories}</Text>
+                <Text style={styles.nutritionText}>Protein: {item.protein}g</Text>
+                <Text style={styles.nutritionText}>Carbs: {item.carbs}g</Text>
+                <Text style={styles.nutritionText}>Fats: {item.fats}g</Text>
+                <Text style={styles.nutritionText}>Sugars: {item.sugars}g</Text>
+              </View>
+              <Image source={item.image} style={styles.image} resizeMode="cover" />
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Lunch</Text>
+          {lunch.map((item, index) => (
+            <View key={index} style={styles.mealInfo}>
+              <View style={styles.mealDetails}>
+                <Text style={styles.mealText}>{item.name}</Text>
+                <Text style={styles.nutritionText}>Calories: {item.calories}</Text>
+                <Text style={styles.nutritionText}>Protein: {item.protein}g</Text>
+                <Text style={styles.nutritionText}>Carbs: {item.carbs}g</Text>
+                <Text style={styles.nutritionText}>Fats: {item.fats}g</Text>
+                <Text style={styles.nutritionText}>Sugars: {item.sugars}g</Text>
+              </View>
+              <Image source={item.image} style={styles.image} resizeMode="cover" />
+            </View>
+          ))}
+        </View>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Dinner</Text>
+          {dinner.map((item, index) => (
+            <View key={index} style={styles.mealInfo}>
+              <View style={styles.mealDetails}>
+                <Text style={styles.mealText}>{item.name}</Text>
+                <Text style={styles.nutritionText}>Calories: {item.calories}</Text>
+                <Text style={styles.nutritionText}>Protein: {item.protein}g</Text>
+                <Text style={styles.nutritionText}>Carbs: {item.carbs}g</Text>
+                <Text style={styles.nutritionText}>Fats: {item.fats}g</Text>
+                <Text style={styles.nutritionText}>Sugars: {item.sugars}g</Text>
+              </View>
+              <Image source={item.image} style={styles.image} resizeMode="cover" />
+            </View>
+          ))}
+        </View>
+      </View>
     </>
-    );
-  
-  
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    resizeMode: 'cover',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f0f4f7', // Light grey-blue background for the whole screen
   },
-  topButtonsContainer: {
-    flexDirection: 'row',
+  titleContainer: {
+    paddingTop: Platform.OS === 'ios' ? 60 : 40, // More space on iOS for the status bar
+    paddingBottom: 20,
     paddingHorizontal: 20,
-    justifyContent: 'flex-end',
-    paddingTop: Platform.OS === 'ios' ? 40 : 20, // Adjust for status bar height
+    backgroundColor: '#f5eedc', // Blue background for the title section
+    borderBottomLeftRadius: 20, // Rounded corners at the bottom
+    borderBottomRightRadius: 20,
   },
-  wateringCan: {
-    width:200,
-    height:200
+  title: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'black', // White text for contrast against the blue background
+    textAlign: 'left',
   },
-  wateringCanContainer: {
-    flex: 1,
-    justifyContent: 'flex-end', 
-    alignItems: 'center', 
-    marginTop: 0,
-    marginLeft: 170,
-    zIndex: 1
+  date: {
+    fontSize: 15,
+    color: 'black', // Light blue text for the date
+    textAlign: 'left',
+    marginTop: 5,
   },
-  restWC: {
-    marginTop: 0,
-    marginLeft: 180,
-    width: 200,
-    height: 200
-  }
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  button: {
+    marginLeft: 100,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    width:140
+  },
+  buttonText: {
+    fontSize: 15,
+    color: '#4a90e2',
+    fontWeight: 'bold',
+  },
+  section: {
+    marginVertical: 10,
+    justifyContent: 'left',
+    alignItems: 'left',
+    width: '90%', // Slightly reduced width for some padding on the sides
+    padding: 20,
+    backgroundColor: '#fff', // White background for the sections
+    borderRadius: 15, // Softer rounded corners
+    shadowColor: '#000', // Shadow for depth
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3, // Elevation for Android
+  },
+  sectionTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  mealInfo: {
+    marginBottom: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  mealText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  nutritionText: {
+    fontSize: 16,
+    color: '#555',
+  }, 
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+  },
 });
+
 
 export default Home;

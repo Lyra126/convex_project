@@ -1,3 +1,5 @@
+/*
+
 import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -68,6 +70,29 @@ const App = () => {
         <GlobalProvider>
             <NavigationContainer>
                 {isLoggedIn ? ( <AppStack email={email} /> ) : (<AuthStack handleLogin={(userEmail) => {  handleLogin(userEmail); }} />)}
+            </NavigationContainer>
+        </GlobalProvider>
+    );
+};
+
+export default App;
+*/
+import React from "react";
+import Home from "./src/Home.js";
+import Login from "./src/Login.js";
+import { useNavigation } from '@react-navigation/native';
+import { GlobalProvider } from "./src/context/global";
+import Navigation from "./Navigation";
+import { createStackNavigator } from "@react-navigation/stack";
+const Stack = createStackNavigator();
+import { NavigationContainer } from "@react-navigation/native";
+const App = () => {
+    return (
+        <GlobalProvider>
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }} >
+                    <Stack.Screen name="Home" component={Home}/>
+                </Stack.Navigator>
             </NavigationContainer>
         </GlobalProvider>
     );

@@ -21,7 +21,7 @@ const PromptLoginSignUp = () => {
                 source={require('./assets/plantingTrees.jpeg')}
                 resizeMode="contain"
             />
-            <Text style={styles.welcometext}>Welcome to reWastify!</Text>
+            <Text style={styles.welcometext}>Welcome to Budget Bytes!</Text>
             <Text style={styles.text}>Please login or sign up to continue</Text>
             <TouchableOpacity style={styles.loginButton} onPress={() => {navigation.navigate('Login')}}>
                 <Text style={styles.loginText}>Login</Text>
