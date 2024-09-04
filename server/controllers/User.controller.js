@@ -64,73 +64,6 @@ const getUserByEmail = async (req, res) => {
     }
 };
 
-// Update the existing function to use query parameters
-const addSavedLocation = async (req, res) => {
-    try {
-        const { email, address } = req.query; // Using query parameters now
-        const user = await UserModel.findOne({ email_address: email });
-
-        // Log incoming request for debugging
-        console.log("Received query:", { email, address });
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        
-
-        // Update the saved_locations array with the new address
-        user.saved_locations.push(address);
-        await user.save();
-
-        res.json({ message: 'Saved location added successfully', saved_locations: user.saved_locations });
-    } catch (error) {
-        console.error("Error adding saved location:", error);
-        res.status(500).json({ error: 'Failed to add saved location' });
-    }
-};
-
-const addWaste = async (req, res) => {
-    try {
-        const { email, wasteAmount } = req.query; // Using query parameters now
-        const user = await UserModel.findOne({ email_address: email });
-
-        // Log incoming request for debugging
-        console.log("Received query:", { email, wasteAmount });
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        
-        user.compost_made += parseInt(wasteAmount);
-        user.current_points = parseInt(user.compost_made);
-        await user.save();
-
-        res.json({ message: 'Waste amount added successfully', waste: user.compost_made });
-    } catch (error) {
-        console.error("Error adding waste amount:", error);
-        res.status(500).json({ error: 'Failed to add waste amount' });
-    }
-};
-
-const updatePoints = async (req, res) => {
-    try {
-        const { email, points } = req.query; // Using query parameters now
-        const user = await UserModel.findOne({ email_address: email });
-
-        // Log incoming request for debugging
-        console.log("Received query:", { email, points });
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        
-        user.current_points = parseInt(points);
-        await user.save();
-
-        res.json({ message: 'Points updated successfully', points: user.current_points });
-    } catch (error) {
-        console.error("Error updating points:", error);
-        res.status(500).json({ error: 'Failed to update points' });
-    }
-};
-
 
 
 export{
@@ -138,8 +71,5 @@ export{
     createUser,
     getUserById,
     getUserByEmailAndPassword,
-    getUserByEmail,
-    addSavedLocation,
-    addWaste,
-    updatePoints
+    getUserByEmail
 }
