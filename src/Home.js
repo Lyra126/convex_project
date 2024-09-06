@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Platform, Image } from "react-native";
 import ProgressBar from './progressBar.js';
+import DonutChart from './DonutChart.js';
 
 const Home = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -18,6 +19,15 @@ const Home = ({ navigation }) => {
   const dinner = [
     { name: 'Grilled Salmon', calories: 350, protein: 30, carbs: 0, fats: 20, image: require('./assets/oatmeal.jpeg') },
   ];
+
+  const data = [
+    [30], // Data for the first ring
+    [20], // Data for the second ring
+    [10], // Data for the third ring
+    [40], // Data for the fourth ring
+  ];
+
+  const colors = ['#FF5733', '#33FF57', '#3357FF', '#FFD700'];
 
   const currentDate = new Date();
 
@@ -113,7 +123,6 @@ const Home = ({ navigation }) => {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Circle Graph</Text>
           
         </View>
       </View>
