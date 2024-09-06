@@ -1,6 +1,7 @@
 import React from "react";
 import Home from "./src/Home.js";
 import Login from "./src/Login.js";
+import MealPrep from "./src/MealPrep.js";
 import GroceryList from "./src/GroceryList.js";
 import { useNavigation } from '@react-navigation/native';
 import { GlobalProvider } from "./src/context/global";
@@ -14,8 +15,8 @@ const App = () => {
     return (
         <GlobalProvider>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="GroceryList" screenOptions={{ headerShown: false }} >
-                    <Stack.Screen name="GroceryList" component={GroceryList}/>
+                <Stack.Navigator initialRouteName="MealPrep" screenOptions={{ headerShown: false }} >
+                    <Stack.Screen name="MealPrep" component={MealPrep}/>
                 </Stack.Navigator>
             </NavigationContainer>
         </GlobalProvider>
