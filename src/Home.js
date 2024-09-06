@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Platform, Image } from "react-native";
-import * as SecureStore from 'expo-secure-store';
-import axios from "axios"; 
+import ProgressBar from './progressBar.js';
 
 const Home = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [points, setPoints] = useState(0);
   const [username, setUsername] = useState('Rachel P.');
+
   const breakfast = [
-    { name: 'Oatmeal', calories: 150, protein: 5, carbs: 27, fats: 3, sugars: 1, image: require('./assets/oatmeal.jpeg') },
+    { name: 'Oatmeal', calories: 150, protein: 5, carbs: 27, fats: 3, image: require('./assets/oatmeal.jpeg') },
   ];
 
   const lunch = [
-    { name: 'Chicken Salad', calories: 250, protein: 20, carbs: 10, fats: 15, sugars: 2, image: require('./assets/oatmeal.jpeg') },
+    { name: 'Chicken Salad', calories: 250, protein: 20, carbs: 10, fats: 15,  image: require('./assets/oatmeal.jpeg') },
   ];
 
   const dinner = [
-    { name: 'Grilled Salmon', calories: 350, protein: 30, carbs: 0, fats: 20, sugars: 0, image: require('./assets/oatmeal.jpeg') },
+    { name: 'Grilled Salmon', calories: 350, protein: 30, carbs: 0, fats: 20, image: require('./assets/oatmeal.jpeg') },
   ];
 
   const currentDate = new Date();
@@ -44,7 +44,7 @@ const Home = ({ navigation }) => {
       </View>
 
       <View style={styles.container}>
-       <View style={styles.section}>
+        <View style={styles.section}>
           <Text style={styles.sectionTitle}>Breakfast</Text>
           {breakfast.map((item, index) => (
             <View key={index} style={styles.mealInfo}>
@@ -54,7 +54,12 @@ const Home = ({ navigation }) => {
                 <Text style={styles.nutritionText}>Protein: {item.protein}g</Text>
                 <Text style={styles.nutritionText}>Carbs: {item.carbs}g</Text>
                 <Text style={styles.nutritionText}>Fats: {item.fats}g</Text>
-                <Text style={styles.nutritionText}>Sugars: {item.sugars}g</Text>
+              </View>
+              <View style={styles.progressContainer}>
+              <ProgressBar percentage={75} color="#ab635e" />
+                <ProgressBar percentage={50} color = "#3357FF"/>
+                <ProgressBar percentage={60} color = "#5e90ab" />
+                <ProgressBar percentage={80} color="#FF5733" />
               </View>
               <Image source={item.image} style={styles.image} resizeMode="cover" />
             </View>
@@ -71,7 +76,12 @@ const Home = ({ navigation }) => {
                 <Text style={styles.nutritionText}>Protein: {item.protein}g</Text>
                 <Text style={styles.nutritionText}>Carbs: {item.carbs}g</Text>
                 <Text style={styles.nutritionText}>Fats: {item.fats}g</Text>
-                <Text style={styles.nutritionText}>Sugars: {item.sugars}g</Text>
+              </View>
+              <View style={styles.progressContainer}>
+              <ProgressBar percentage={75} color="#ab635e" />
+                <ProgressBar percentage={50} color = "#3357FF"/>
+                <ProgressBar percentage={60} color = "#5e90ab" />
+                <ProgressBar percentage={80} color="#FF5733" />
               </View>
               <Image source={item.image} style={styles.image} resizeMode="cover" />
             </View>
@@ -87,11 +97,24 @@ const Home = ({ navigation }) => {
                 <Text style={styles.nutritionText}>Protein: {item.protein}g</Text>
                 <Text style={styles.nutritionText}>Carbs: {item.carbs}g</Text>
                 <Text style={styles.nutritionText}>Fats: {item.fats}g</Text>
-                <Text style={styles.nutritionText}>Sugars: {item.sugars}g</Text>
+                
+              </View>
+              <View style={styles.progressContainer}>
+                <ProgressBar percentage={75} color="#ab635e" />
+                <ProgressBar percentage={50} color = "#3357FF"/>
+                <ProgressBar percentage={60} color = "#5e90ab" />
+                <ProgressBar percentage={80} color="#FF5733" />
+
+
               </View>
               <Image source={item.image} style={styles.image} resizeMode="cover" />
             </View>
           ))}
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Circle Graph</Text>
+          
         </View>
       </View>
     </>
@@ -129,6 +152,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 5,
+    justifyContent: 'space-between'
   },
   button: {
     marginLeft: 100,
@@ -144,45 +168,57 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   section: {
-    marginVertical: 10,
+    marginVertical: 5,
     justifyContent: 'left',
     alignItems: 'left',
-    width: '90%', // Slightly reduced width for some padding on the sides
-    padding: 20,
+    width: '92%', // Slightly reduced width for some padding on the sides
+    padding: 15,
     backgroundColor: '#fff', // White background for the sections
     borderRadius: 15, // Softer rounded corners
     shadowColor: '#000', // Shadow for depth
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    elevation: 3, // Elevation for Android
+
   },
   sectionTitle: {
     fontSize: 15,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 3,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
   mealInfo: {
-    marginBottom: 5,
-    flexDirection: 'row',
+    flexDirection: 'row', // Arrange items horizontally
     alignItems: 'center',
+    justifyContent: 'space-between', // Spread items to fill the space
+    marginBottom: 5,
+  },
+  mealDetails: {
+    flex: 2, // Takes up 2 parts of the space
+  },
+  progressContainer: {
+    flex: 1, // Takes up 1 part of the space
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  progressBar: {
+    marginVertical: 2, // Adjust vertical space between bars
   },
   mealText: {
     fontSize: 18,
     fontWeight: 'bold',
   },
   nutritionText: {
-    fontSize: 16,
+    fontSize: 13,
     color: '#555',
-  }, 
+  },
   image: {
-    width: 100,
-    height: 100,
+    height: 80,
+    width: 80,
     borderRadius: 10,
+    margin: 12
   },
 });
-
 
 export default Home;
