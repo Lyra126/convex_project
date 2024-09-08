@@ -1,7 +1,7 @@
 // OpenAIService.js
 import axios from 'axios';
 
-const API_KEY = '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';
+const API_KEY = 'e';
 
 const openAI = axios.create({
   baseURL: 'https://api.openai.com/v1',
