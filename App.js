@@ -15,8 +15,8 @@ const App = () => {
     return (
         <GlobalProvider>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="MealPrep" screenOptions={{ headerShown: false }} >
-                    <Stack.Screen name="MealPrep" component={MealPrep}/>
+                <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }} >
+                    <Stack.Screen name="Home" component={Home}/>
                 </Stack.Navigator>
             </NavigationContainer>
         </GlobalProvider>

@@ -4,7 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 import axios from "axios";
 
 const GroceryList = ({ navigation }) => {
-  const [email, setEmail] = useState('john.doe@example.com');
+  const [email, setEmail] = useState('user@example.com');
   const [groceryCart, setGroceryCart] = useState([]);
 
   useEffect(() => {
