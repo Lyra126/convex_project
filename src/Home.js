@@ -1,24 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Platform, Image } from "react-native";
 import ProgressBar from './progressBar.js';
-import DonutChart from './DonutChart.js';
+import DonutChart from './DonutChart.js'; // Assuming you use it somewhere in the component
+import axios from "axios";
+import { generateMealPlan } from './GenerateMealPlan.js';  // Adjust the path accordingly
 
 const Home = ({ navigation }) => {
-  const [email, setEmail] = useState('');
   const [points, setPoints] = useState(0);
-  const [username, setUsername] = useState('Rachel P.');
+  const [username, setUsername] = useState('');
+  const [name, setName] = useState('Rachel P.');
+  const [email, setEmail] = useState('user@example.com');
+  const [breakfast, setBreakfast] = useState(null);
+  const [lunch, setLunch] = useState(null);
+  const [dinner, setDinner] = useState(null);
+  const [calorieGoal, setCalorieGoal] = useState('');
+  const [dietaryRestrictions, setDietaryRestrictions] = useState('');
+  const [fitnessGoals, setFitnessGoals] = useState('');
+  const [mealPlan, setMealPlan] = useState(null);
 
-  // const breakfast = [
-  //   { name: 'Oatmeal', calories: 150, protein: 5, carbs: 27, fats: 3, image: require('./assets/oatmeal.jpeg') },
-  // ];
-  //
-  // const lunch = [
-  //   { name: 'Chicken Salad', calories: 250, protein: 20, carbs: 10, fats: 15,  image: require('./assets/oatmeal.jpeg') },
-  // ];
-  //
-  // const dinner = [
-  //   { name: 'Grilled Salmon', calories: 350, protein: 30, carbs: 0, fats: 20, image: require('./assets/oatmeal.jpeg') },
-  // ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (email) {
+          
+          const response = await axios.get(`http://192.168.0.5:8080/users/getUser?email=${email}`);
+          const userData = response.data;
+          if (userData) {
+            setName(userData.name);
+            setBreakfast(userData.meals.breakfast);
+            setLunch(userData.meals.lunch);
+            setDinner(userData.meals.dinner);
+            setCalorieGoal(userData.calorieGoal);
+            setDietaryRestrictions(userData.dietaryRestrictions);
+            setFitnessGoals(userData.fitnessGoals);
+          } else {
+            console.error("User not found or incorrect credentials");
+          }
+        }
+      } catch (error) {
+        console.error("Error getting user data:", error);
+      }
+    };
+    fetchData();
+  }, [email]);
+
+  const getUserData = async (key) => {
+    const result = await SecureStore.getItemAsync(key);
+    if (result) {
+      setEmail(result);
+      return result;
+    } else {
+      console.log('No value stored under that key.');
+      return null;
+    }
+  };
 
   const data = [
     [30], // Data for the first ring
@@ -35,6 +70,21 @@ const Home = ({ navigation }) => {
     navigation.navigate(screen);
   };
 
+  const handleGenerateMealPlan = async () => {
+    const userInput = {
+      calorieGoal,
+      dietaryRestrictions,
+      fitnessGoals,
+    };
+
+    try {
+      const generatedMealPlan = await generateMealPlan(userInput);
+      setMealPlan(generatedMealPlan); // Assuming `setMealPlan` exists in the state
+    } catch (error) {
+      console.error("Error generating meal plan:", error);
+    }
+  };
+
   const formattedDate = currentDate.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -47,8 +97,8 @@ const Home = ({ navigation }) => {
         <Text style={styles.title}>Good morning, {username}</Text>
         <View style={styles.row}>
           <Text style={styles.date}>{formattedDate}</Text>
-          <TouchableOpacity style={styles.button} onPress={() => navigateToScreen('SomeScreen')}>
-            <Text style={styles.buttonText}>Refresh Meals </Text>
+          <TouchableOpacity style={styles.button} onPress={() => handleGenerateMealPlan()}>
+            <Text style={styles.buttonText} >Refresh Meals</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -56,74 +106,80 @@ const Home = ({ navigation }) => {
       <View style={styles.container}>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Breakfast</Text>
-          {breakfast.map((item, index) => (
-            <View key={index} style={styles.mealInfo}>
+          {breakfast ? (
+            <View style={styles.mealInfo}>
               <View style={styles.mealDetails}>
-                <Text style={styles.mealText}>{item.name}</Text>
-                <Text style={styles.nutritionText}>Calories: {item.calories}</Text>
-                <Text style={styles.nutritionText}>Protein: {item.protein}g</Text>
-                <Text style={styles.nutritionText}>Carbs: {item.carbs}g</Text>
-                <Text style={styles.nutritionText}>Fats: {item.fats}g</Text>
+                <Text style={styles.mealText}>{breakfast.name}</Text>
+                <Text style={styles.nutritionText}>Calories: {breakfast.calories}</Text>
+                <Text style={styles.nutritionText}>Protein: {breakfast.protein}g</Text>
+                <Text style={styles.nutritionText}>Carbs: {breakfast.carbs}g</Text>
+                <Text style={styles.nutritionText}>Fats: {breakfast.fat}g</Text>
               </View>
               <View style={styles.progressContainer}>
-              <ProgressBar percentage={75} color="#ab635e" />
-                <ProgressBar percentage={50} color = "#3357FF"/>
-                <ProgressBar percentage={60} color = "#5e90ab" />
+                <ProgressBar percentage={75} color="#ab635e" />
+                <ProgressBar percentage={50} color="#3357FF"/>
+                <ProgressBar percentage={60} color="#5e90ab" />
                 <ProgressBar percentage={80} color="#FF5733" />
               </View>
-              <Image source={item.image} style={styles.image} resizeMode="cover" />
+              {breakfast.imageUrl ? (
+                <Image source={{ uri: breakfast.imageUrl }} style={styles.image} resizeMode="cover" />
+              ) : null}
             </View>
-          ))}
+          ) : (
+            <Text>No breakfast data available</Text>
+          )}
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Lunch</Text>
-          {lunch.map((item, index) => (
-            <View key={index} style={styles.mealInfo}>
+          {lunch ? (
+            <View style={styles.mealInfo}>
               <View style={styles.mealDetails}>
-                <Text style={styles.mealText}>{item.name}</Text>
-                <Text style={styles.nutritionText}>Calories: {item.calories}</Text>
-                <Text style={styles.nutritionText}>Protein: {item.protein}g</Text>
-                <Text style={styles.nutritionText}>Carbs: {item.carbs}g</Text>
-                <Text style={styles.nutritionText}>Fats: {item.fats}g</Text>
-              </View>
-              <View style={styles.progressContainer}>
-              <ProgressBar percentage={75} color="#ab635e" />
-                <ProgressBar percentage={50} color = "#3357FF"/>
-                <ProgressBar percentage={60} color = "#5e90ab" />
-                <ProgressBar percentage={80} color="#FF5733" />
-              </View>
-              <Image source={item.image} style={styles.image} resizeMode="cover" />
-            </View>
-          ))}
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Dinner</Text>
-          {dinner.map((item, index) => (
-            <View key={index} style={styles.mealInfo}>
-              <View style={styles.mealDetails}>
-                <Text style={styles.mealText}>{item.name}</Text>
-                <Text style={styles.nutritionText}>Calories: {item.calories}</Text>
-                <Text style={styles.nutritionText}>Protein: {item.protein}g</Text>
-                <Text style={styles.nutritionText}>Carbs: {item.carbs}g</Text>
-                <Text style={styles.nutritionText}>Fats: {item.fats}g</Text>
-                
+                <Text style={styles.mealText}>{lunch.name}</Text>
+                <Text style={styles.nutritionText}>Calories: {lunch.calories}</Text>
+                <Text style={styles.nutritionText}>Protein: {lunch.protein}g</Text>
+                <Text style={styles.nutritionText}>Carbs: {lunch.carbs}g</Text>
+                <Text style={styles.nutritionText}>Fats: {lunch.fat}g</Text>
               </View>
               <View style={styles.progressContainer}>
                 <ProgressBar percentage={75} color="#ab635e" />
-                <ProgressBar percentage={50} color = "#3357FF"/>
-                <ProgressBar percentage={60} color = "#5e90ab" />
+                <ProgressBar percentage={50} color="#3357FF"/>
+                <ProgressBar percentage={60} color="#5e90ab" />
                 <ProgressBar percentage={80} color="#FF5733" />
-
-
               </View>
-              <Image source={item.image} style={styles.image} resizeMode="cover" />
+              {lunch.imageUrl ? (
+                <Image source={{ uri: lunch.imageUrl }} style={styles.image} resizeMode="cover" />
+              ) : null}
             </View>
-          ))}
+          ) : (
+            <Text>No lunch data available</Text>
+          )}
         </View>
 
         <View style={styles.section}>
-          
+          <Text style={styles.sectionTitle}>Dinner</Text>
+          {dinner ? (
+            <View style={styles.mealInfo}>
+              <View style={styles.mealDetails}>
+                <Text style={styles.mealText}>{dinner.name}</Text>
+                <Text style={styles.nutritionText}>Calories: {dinner.calories}</Text>
+                <Text style={styles.nutritionText}>Protein: {dinner.protein}g</Text>
+                <Text style={styles.nutritionText}>Carbs: {dinner.carbs}g</Text>
+                <Text style={styles.nutritionText}>Fats: {dinner.fat}g</Text>
+              </View>
+              <View style={styles.progressContainer}>
+                <ProgressBar percentage={75} color="#ab635e" />
+                <ProgressBar percentage={50} color="#3357FF"/>
+                <ProgressBar percentage={60} color="#5e90ab" />
+                <ProgressBar percentage={80} color="#FF5733" />
+              </View>
+              {dinner.imageUrl ? (
+                <Image source={{ uri: dinner.imageUrl }} style={styles.image} resizeMode="cover" />
+              ) : null}
+            </View>
+          ) : (
+            <Text>No dinner data available</Text>
+          )}
         </View>
       </View>
     </>
@@ -169,7 +225,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: '#fff',
     borderRadius: 5,
-    width:140
+    width: 140
   },
   buttonText: {
     fontSize: 15,
@@ -187,47 +243,48 @@ const styles = StyleSheet.create({
     shadowColor: '#000', // Shadow for depth
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 5,
-
+    shadowRadius: 4,
+    elevation: 3, // Elevation for Android
   },
   sectionTitle: {
-    fontSize: 15,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 3,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    marginBottom: 10,
+    color: '#333', // Dark grey text for section titles
   },
   mealInfo: {
-    flexDirection: 'row', // Arrange items horizontally
-    alignItems: 'center',
-    justifyContent: 'space-between', // Spread items to fill the space
-    marginBottom: 5,
+    flexDirection: 'row',
+    alignItems: 'flex-start', // Ensure content aligns at the top
+    flexWrap: 'wrap', // Allow wrapping in case content exceeds available space
+    marginBottom: 10,
+    width: '100%', // Make sure it uses the full width of the section
   },
   mealDetails: {
-    flex: 2, // Takes up 2 parts of the space
-  },
-  progressContainer: {
-    flex: 1, // Takes up 1 part of the space
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-  },
-  progressBar: {
-    marginVertical: 2, // Adjust vertical space between bars
+    flex: 1,
+    paddingHorizontal: 10,
   },
   mealText: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#333', // Dark grey text for meal names
   },
   nutritionText: {
-    fontSize: 13,
-    color: '#555',
+    fontSize: 16,
+    color: '#666', // Light grey text for nutritional info
   },
   image: {
-    height: 80,
-    width: 80,
+    width: 100,
+    height: 100,
     borderRadius: 10,
-    margin: 12
   },
+  progressContainer: {
+    width: '15%',
+    marginVertical: 10,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }
 });
 
 export default Home;

@@ -47,9 +47,18 @@ const MealPrep = ({ route }) => {
         <Text style={styles.info}>Prep Time: {recipe.prepTime}</Text>
         <Text style={styles.info}>Servings: {recipe.servings}</Text>
         <Text style={styles.subTitle}>Ingredients:</Text>
-        <Text style={styles.text}>{recipe.ingredients}</Text>
-        <Text style={styles.subTitle}>Directions:</Text>
-        <Text style={styles.text}>{recipe.directions}</Text>
+        <Text style={styles.subTitle}>Ingredients:</Text>
+      <Text style={styles.text}>
+        {recipe.ingredients.split('\n').map((item, index) => (
+          <Text key={index}>• {item.trim()}{'\n'}</Text>
+        ))}
+      </Text>
+      <Text style={styles.subTitle}>Directions:</Text>
+      <Text style={styles.text}>
+        {recipe.directions.map((item, index) => (
+          <Text key={index}>• {item.trim()}{'\n'}</Text>
+        ))}
+      </Text>
         <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
           <Text style={styles.buttonText}>Save Recipe</Text>
         </TouchableOpacity>
