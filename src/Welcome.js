@@ -1,81 +1,93 @@
-import React, { useRef, useEffect, useState } from "react";
-import {
-    View,
-    Animated,
-    Image,
-    StyleSheet,
-    SafeAreaView,
-} from "react-native";
-import { useNavigation } from '@react-navigation/native';
-import globalStyles from './styles/globalStyles.js';
+import React from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 const Welcome = () => {
-    const navigation = useNavigation();
-    const progress = useRef(new Animated.Value(0.5)).current;
-    const scale = useRef(new Animated.Value(1.2)).current;
-    // const opacity = useRef(new Animated.Value(1)).current;
-
-    useEffect(() => {
-        Animated.loop(
-            Animated.parallel([
-                Animated.sequence([
-                    Animated.spring(progress, { toValue: 1, useNativeDriver: true }),
-                    Animated.spring(progress, { toValue: 2, useNativeDriver: true }),
-                ]),
-                Animated.sequence([
-                    Animated.spring(scale, { toValue: 1.5, useNativeDriver: true }),
-                    Animated.spring(scale, { toValue: 1, useNativeDriver: true }),
-                ]),
-            ]),
-            { iterations: 1 }
-        ).start(() => {
-            navigation.reset({
-                index: 0, // resets the stack so that user cannot go back to this welcome screen
-                routes: [{ name: 'PromptLoginSignUp' }],
-            });
-        });
-    }, []);
-
     return (
-        <SafeAreaView style={[globalStyles.AndroidSafeArea, styles.container]}>
-            <Animated.View
-                style={[
-                    {
-                        transform: [
-                            { scale },
-                            {
-                                rotate: progress.interpolate({
-                                    inputRange: [0.5, 1],
-                                    outputRange: [`${Math.PI}rad`, `${2 * Math.PI}rad`],
-                                }),
-                            },
-                        ],
-                    },
-                ]}
-            >
-                <Animated.Image
-                    style={{...styles.image }}
-                    source={require('./assets/earthDay.gif')}
-                />
-            </Animated.View>
-        </SafeAreaView>
+        <View style={styles.container}>
+            {/* top green part, with image */}
+            <View style={styles.topDiv}>
+                <Image></Image>
+            </View>
+
+            {/* hello text */}
+            <View style={styles.welcomeDiv}>
+                <Text style={styles.welcomeText}>Hey! Welcome to</Text>
+                <Text style={styles.appText}>Budget Bytes</Text>
+            </View>
+
+            {/* description text */}
+            <View>
+                <Text style={styles.descriptionText}>Meet <Text style={{ fontWeight: '800', color: 'black' }}>Bud</Text>, your new AI kitchen assistant:
+                    simplifying your meal planning, shopping, and budgeting.</Text>
+            </View>
+
+            {/* button for navigation to create account */}
+            <View style={styles.outerCircle}>
+                <TouchableOpacity style={styles.button} onPress={() => console.log('Button pressed!')}>
+                    <Text style={{ fontSize: 50, fontWeight: 'bold', color: 'grey'}}>→</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
     );
 }
-
-const SIZE = 100.0;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
         justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FCFBF5',
     },
-
-    image: {
-        width: 130,
-        height: 130,
+    topDiv: {
+        backgroundColor: '#87C97E',
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 400, // Adjust height as needed
     },
+    welcomeDiv: {
+        marginTop: 330,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    welcomeText: {
+        fontSize: 25,
+        fontWeight: '600',
+    },
+    appText: {
+        marginTop: -8,
+        fontSize: 36,
+        fontWeight: '800',
+        paddingBottom: 20,
+    },
+    descriptionText: {
+        fontSize: 15,
+        color: '#2d2d2d',
+        fontWeight: '450',
+        paddingLeft: 50,
+        paddingRight: 50,
+        textAlign: 'center',
+    },
+    outerCircle: {
+        marginTop: 40,
+        borderWidth: 5,
+        borderColor: 'black',
+        borderRadius: 500,
+        padding: 10,
+        color: '#525252'
+    },
+    button: {
+        borderWidth: 5,
+        borderColor: 'grey',
+        borderRadius: 500,
+        width: 80,
+        height: 80,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });
 
 export default Welcome;

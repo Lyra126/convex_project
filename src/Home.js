@@ -8,17 +8,17 @@ const Home = ({ navigation }) => {
   const [points, setPoints] = useState(0);
   const [username, setUsername] = useState('Rachel P.');
 
-  const breakfast = [
-    { name: 'Oatmeal', calories: 150, protein: 5, carbs: 27, fats: 3, image: require('./assets/oatmeal.jpeg') },
-  ];
-
-  const lunch = [
-    { name: 'Chicken Salad', calories: 250, protein: 20, carbs: 10, fats: 15,  image: require('./assets/oatmeal.jpeg') },
-  ];
-
-  const dinner = [
-    { name: 'Grilled Salmon', calories: 350, protein: 30, carbs: 0, fats: 20, image: require('./assets/oatmeal.jpeg') },
-  ];
+  // const breakfast = [
+  //   { name: 'Oatmeal', calories: 150, protein: 5, carbs: 27, fats: 3, image: require('./assets/oatmeal.jpeg') },
+  // ];
+  //
+  // const lunch = [
+  //   { name: 'Chicken Salad', calories: 250, protein: 20, carbs: 10, fats: 15,  image: require('./assets/oatmeal.jpeg') },
+  // ];
+  //
+  // const dinner = [
+  //   { name: 'Grilled Salmon', calories: 350, protein: 30, carbs: 0, fats: 20, image: require('./assets/oatmeal.jpeg') },
+  // ];
 
   const data = [
     [30], // Data for the first ring

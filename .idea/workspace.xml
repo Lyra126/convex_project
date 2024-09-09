@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bfde17b8-2875-4bf2-a82d-785771b095ac" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Start.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Welcome.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Welcome.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/earthDay.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/logos/appleLogo.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/logos/appleLogo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/logos/bananaLogo.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/logos/bananaLogo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/logos/mangoLogo.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/logos/mangoLogo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/logos/orangeLogo.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/logos/orangeLogo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/logos/peachLogo.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/logos/peachLogo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/oatmeal.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/oatmeal.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/promptLoginSignUp.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/globalStyles.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/globalStyles.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2lbzFLfl100vBKgUeLkO8MlJjzj" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/fonts" />
+      <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/server" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bfde17b8-2875-4bf2-a82d-785771b095ac" name="Changes" comment="" />
+      <created>1725463459048</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1725463459048</updated>
+      <workItem from="1725463460843" duration="1137000" />
+      <workItem from="1725575029026" duration="180000" />
+      <workItem from="1725575213332" duration="52000" />
+      <workItem from="1725575625176" duration="2517000" />
+      <workItem from="1725656124792" duration="3144000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
